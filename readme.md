@@ -20,6 +20,8 @@ This repository contains a hardcoded, frontend-only Moodle-style prototype for *
   - Matching activity
 
 ### Test Credentials
+> ⚠️ Demo only: these hardcoded credentials/codes are for prototype testing and must be replaced with secure backend authentication before production use.
+
 - **Admin login**
   - Username: `admin`
   - Password: `LWS@123`

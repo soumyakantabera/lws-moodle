@@ -1,3 +1,4 @@
+// Demo-only frontend credentials; replace with secure backend authentication in production.
 const ADMIN_CREDENTIALS = { username: "admin", password: "LWS@123" };
 const VALID_BATCH_CODES = ["LWS-PLAN-A", "LWS-PLAN-B"];
 const DEFAULT_SPEECH_RATE = 0.95;
@@ -597,7 +598,7 @@ el.checkMatching.addEventListener("click", () => {
   let score = 0;
   selects.forEach((select) => {
     const idx = Number(select.getAttribute("data-match-index"));
-    if (!Number.isInteger(idx)) return;
+    if (Number.isNaN(idx)) return;
     if (select.value && select.value === state.matching[idx].right) score += 1;
   });
   setMessage(el.matchingResult, `Matching score: ${score}/${state.matching.length}`, "ok");
