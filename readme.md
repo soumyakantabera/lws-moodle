@@ -32,3 +32,14 @@ This repository contains a hardcoded, frontend-only Moodle-style prototype for *
 
 ### Run
 Open `index.html` in a browser.
+
+### Deployment (GitHub Pages)
+This repository now includes a GitHub Actions workflow at `.github/workflows/deploy.yml` to deploy the static site to GitHub Pages.
+
+#### One-time setup
+1. Open repository **Settings → Pages**.
+2. Set **Source** to **GitHub Actions**.
+
+#### Deploy trigger
+- Automatic deploy on every push to `main`.
+- Manual deploy via **Actions → Deploy static site to GitHub Pages → Run workflow**.
