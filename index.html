@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn With Smile | Moodle Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Learn With Smile</h1>
+      <p>Online Spoken English & Career Coaching | Moodle Prototype</p>
+    </header>
+
+    <main class="container">
+      <section id="auth-section" class="card">
+        <h2>Login</h2>
+        <div class="tabs">
+          <button id="admin-tab" class="tab active">Admin</button>
+          <button id="student-tab" class="tab">Student</button>
+        </div>
+
+        <form id="admin-login-form" class="form active">
+          <label>
+            Username
+            <input type="text" id="admin-username" placeholder="admin" required />
+          </label>
+          <label>
+            Password
+            <input type="password" id="admin-password" placeholder="LWS@123" required />
+          </label>
+          <button type="submit">Login as Admin</button>
+        </form>
+
+        <form id="student-login-form" class="form">
+          <label>
+            Student Name
+            <input type="text" id="student-name" placeholder="Enter your name" required />
+          </label>
+          <label>
+            Batch Code
+            <input type="text" id="student-batch-code" placeholder="LWS-PLAN-A" required />
+          </label>
+          <button type="submit">Login as Student</button>
+        </form>
+
+        <p id="auth-message" class="message"></p>
+      </section>
+
+      <section id="admin-section" class="hidden">
+        <div class="card row space-between">
+          <h2>Admin Dashboard</h2>
+          <button id="admin-logout">Logout</button>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Manage Students</h3>
+            <form id="student-manage-form" class="form">
+              <input type="hidden" id="student-edit-id" />
+              <label>
+                Name
+                <input type="text" id="student-manage-name" required />
+              </label>
+              <label>
+                Batch Code
+                <select id="student-manage-batch" required></select>
+              </label>
+              <button type="submit">Save Student</button>
+              <button type="button" id="student-form-reset" class="secondary">Clear</button>
+            </form>
+            <p id="student-manage-message" class="message"></p>
+            <ul id="students-list" class="list"></ul>
+          </div>
+
+          <div class="card">
+            <h3>Manage Learning Content</h3>
+            <form id="content-manage-form" class="form">
+              <input type="hidden" id="content-edit-id" />
+              <label>
+                Title
+                <input type="text" id="content-title" required />
+              </label>
+              <label>
+                Batch Code
+                <select id="content-batch" required></select>
+              </label>
+              <label>
+                Type
+                <select id="content-type" required>
+                  <option value="video">Video</option>
+                  <option value="audio">Audio</option>
+                  <option value="pdf">PDF</option>
+                  <option value="document">Document</option>
+                  <option value="markdown">Markdown</option>
+                  <option value="text">Text</option>
+                </select>
+              </label>
+              <label>
+                Source URL (for video/audio/pdf/document)
+                <input type="url" id="content-source" placeholder="https://..." />
+              </label>
+              <label>
+                Content Text (for markdown/text)
+                <textarea id="content-text" rows="5" placeholder="Enter markdown/text content"></textarea>
+              </label>
+              <button type="submit">Save Content</button>
+              <button type="button" id="content-form-reset" class="secondary">Clear</button>
+            </form>
+            <p id="content-manage-message" class="message"></p>
+            <ul id="content-list" class="list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="student-section" class="hidden">
+        <div class="card row space-between">
+          <h2>Student Dashboard</h2>
+          <button id="student-logout">Logout</button>
+        </div>
+
+        <div class="card" id="student-profile"></div>
+        <div class="card">
+          <h3>Learning Content</h3>
+          <div id="student-content" class="stack"></div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Task Submission</h3>
+            <p>Task: Record and submit a self-introduction for interview practice.</p>
+            <textarea id="task-response" rows="5" placeholder="Paste your response link or text"></textarea>
+            <button id="submit-task">Submit Task</button>
+            <p id="task-message" class="message"></p>
+          </div>
+
+          <div class="card">
+            <h3>Quiz</h3>
+            <div id="quiz-container"></div>
+            <button id="submit-quiz">Submit Quiz</button>
+            <p id="quiz-result" class="message"></p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Flashcards</h3>
+            <div id="flashcards" class="flashcards"></div>
+          </div>
+
+          <div class="card">
+            <h3>Matching Activity</h3>
+            <div id="matching"></div>
+            <button id="check-matching">Check Matching</button>
+            <p id="matching-result" class="message"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
