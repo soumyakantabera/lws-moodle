@@ -29,4 +29,4 @@ This repository contains a hardcoded, frontend-only Moodle-style prototype for *
   - `LWS-PLAN-B`
 
 ### Run
-Open `/home/runner/work/lws-moodle/lws-moodle/index.html` in a browser.
+Open `index.html` in a browser.

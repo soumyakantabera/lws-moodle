@@ -195,15 +195,47 @@ function renderAdmin() {
 }
 
 function markdownToHTML(md) {
-  return escapeHTML(md)
-    .replace(/^### (.*)$/gm, "<h4>$1</h4>")
-    .replace(/^## (.*)$/gm, "<h3>$1</h3>")
-    .replace(/^# (.*)$/gm, "<h2>$1</h2>")
-    .replace(/^\- (.*)$/gm, "<li>$1</li>")
+  const lines = escapeHTML(md).split("\n");
+  const html = [];
+  let listItems = [];
+
+  const flushList = () => {
+    if (!listItems.length) return;
+    html.push(`<ul>${listItems.map((item) => `<li>${item}</li>`).join("")}</ul>`);
+    listItems = [];
+  };
+
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushList();
+      return;
+    }
+
+    if (line.startsWith("- ")) {
+      listItems.push(line.slice(2));
+      return;
+    }
+
+    flushList();
+
+    if (line.startsWith("### ")) {
+      html.push(`<h4>${line.slice(4)}</h4>`);
+    } else if (line.startsWith("## ")) {
+      html.push(`<h3>${line.slice(3)}</h3>`);
+    } else if (line.startsWith("# ")) {
+      html.push(`<h2>${line.slice(2)}</h2>`);
+    } else {
+      html.push(`<p>${line}</p>`);
+    }
+  });
+
+  flushList();
+
+  return html
+    .join("")
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>")
-    .replace(/\n/g, "<br>")
-    .replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>");
+    .replace(/\*(.*?)\*/g, "<em>$1</em>");
 }
 
 function speakText(text) {
@@ -370,7 +402,7 @@ el.studentTab.addEventListener("click", () => switchAuthTab("student"));
 el.adminForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const username = document.getElementById("admin-username").value.trim();
-  const password = document.getElementById("admin-password").value;
+  const password = document.getElementById("admin-password").value.trim();
 
   if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
     state.currentUser = { role: "admin", name: "Administrator" };
@@ -530,7 +562,7 @@ el.submitQuiz.addEventListener("click", () => {
 
 el.flashcards.addEventListener("click", (e) => {
   const index = e.target.closest("[data-flash]")?.getAttribute("data-flash");
-  if (index === undefined) return;
+  if (index == null) return;
   const card = state.flashcards[Number(index)];
   const button = e.target.closest("[data-flash]");
   if (!card || !button) return;
@@ -546,6 +578,7 @@ el.checkMatching.addEventListener("click", () => {
   let score = 0;
   selects.forEach((select) => {
     const idx = Number(select.getAttribute("data-match-index"));
+    if (!Number.isInteger(idx) || idx < 0 || idx >= state.matching.length) return;
     if (select.value && select.value === state.matching[idx].right) score += 1;
   });
   setMessage(el.matchingResult, `Matching score: ${score}/${state.matching.length}`, "ok");
