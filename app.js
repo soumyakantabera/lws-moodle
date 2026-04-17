@@ -100,6 +100,7 @@ const el = {
   studentManageName: document.getElementById("student-manage-name"),
   studentManageBatch: document.getElementById("student-manage-batch"),
   studentFormReset: document.getElementById("student-form-reset"),
+  studentManageMessage: document.getElementById("student-manage-message"),
   studentsList: document.getElementById("students-list"),
 
   contentManageForm: document.getElementById("content-manage-form"),
@@ -110,6 +111,7 @@ const el = {
   contentSource: document.getElementById("content-source"),
   contentText: document.getElementById("content-text"),
   contentFormReset: document.getElementById("content-form-reset"),
+  contentManageMessage: document.getElementById("content-manage-message"),
   contentList: document.getElementById("content-list"),
 
   studentProfile: document.getElementById("student-profile"),
@@ -372,6 +374,7 @@ function clearStudentForm() {
   el.studentEditId.value = "";
   el.studentManageName.value = "";
   el.studentManageBatch.value = VALID_BATCH_CODES[0];
+  setMessage(el.studentManageMessage, "");
 }
 
 function clearContentForm() {
@@ -381,6 +384,7 @@ function clearContentForm() {
   el.contentType.value = "video";
   el.contentSource.value = "";
   el.contentText.value = "";
+  setMessage(el.contentManageMessage, "");
 }
 
 function escapeHTML(str = "") {
@@ -438,7 +442,10 @@ el.studentManageForm.addEventListener("submit", (e) => {
   const id = el.studentEditId.value;
   const name = el.studentManageName.value.trim();
   const batchCode = el.studentManageBatch.value;
-  if (!name) return;
+  if (!name) {
+    setMessage(el.studentManageMessage, "Student name is required.", "error");
+    return;
+  }
 
   if (id) {
     const student = state.students.find((s) => s.id === id);
@@ -450,6 +457,7 @@ el.studentManageForm.addEventListener("submit", (e) => {
     state.students.push({ id: `s${Date.now()}`, name, batchCode });
   }
   clearStudentForm();
+  setMessage(el.studentManageMessage, "Student saved successfully.", "ok");
   renderStudents();
 });
 
@@ -482,9 +490,18 @@ el.contentManageForm.addEventListener("submit", (e) => {
   const source = el.contentSource.value.trim();
   const text = el.contentText.value.trim();
 
-  if (!title) return;
-  if (["video", "audio", "pdf", "document"].includes(type) && !source) return;
-  if (["markdown", "text"].includes(type) && !text) return;
+  if (!title) {
+    setMessage(el.contentManageMessage, "Content title is required.", "error");
+    return;
+  }
+  if (["video", "audio", "pdf", "document"].includes(type) && !source) {
+    setMessage(el.contentManageMessage, "Source URL is required for this content type.", "error");
+    return;
+  }
+  if (["markdown", "text"].includes(type) && !text) {
+    setMessage(el.contentManageMessage, "Content text is required for markdown/text.", "error");
+    return;
+  }
 
   if (id) {
     const content = state.contents.find((c) => c.id === id);
@@ -507,6 +524,7 @@ el.contentManageForm.addEventListener("submit", (e) => {
   }
 
   clearContentForm();
+  setMessage(el.contentManageMessage, "Content saved successfully.", "ok");
   renderContents();
 });
 
@@ -562,7 +580,7 @@ el.submitQuiz.addEventListener("click", () => {
 
 el.flashcards.addEventListener("click", (e) => {
   const index = e.target.closest("[data-flash]")?.getAttribute("data-flash");
-  if (index == null) return;
+  if (index === null || index === undefined) return;
   const card = state.flashcards[Number(index)];
   const button = e.target.closest("[data-flash]");
   if (!card || !button) return;

@@ -25,8 +25,8 @@ This repository contains a hardcoded, frontend-only Moodle-style prototype for *
   - Password: `LWS@123`
 
 - **Student batch code login**
-  - `LWS-PLAN-A`
-  - `LWS-PLAN-B`
+  - `LWS-PLAN-A` (Spoken English / Career Accelerator)
+  - `LWS-PLAN-B` (IELTS Prep / Business English B2-C1)
 
 ### Run
 Open `index.html` in a browser.
